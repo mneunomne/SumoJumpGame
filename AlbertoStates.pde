@@ -35,7 +35,7 @@ class AlbertoStateSearch extends AlbertoState {
     // also if there are no visible platforms... just do something as if the goal was right there!
     if (onThisPlatform || player.sensePlatforms().size() == 0) {
       // get X position of the next closest goal
-      float goalX = getClosestGoal().position.x;
+      float goalX = getClosestGoal().posi;tion.x;
       // if is far or near, if objective above or under -> Walk or Jump
       String action = (abs(goalX) > 150 || !isObjectiveAbove) ? "Walk" : "Jump";
       // if move right or left
