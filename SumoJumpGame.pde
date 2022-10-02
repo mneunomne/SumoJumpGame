@@ -24,7 +24,7 @@ int countDownlastFullSecond = countDownDuration / 1000;
 int countDownRemainingTime = countDownDuration;
 boolean countDownFinished = false;
 
-String nameOfCurrentLevel = "level1.csv";
+String nameOfCurrentLevel = "level2.csv";
 int widthOfCurrentLevel   = -1;
 int heightOfCurrentLevel  = -1;
 
@@ -63,7 +63,8 @@ void initGame() {
   gameEngine = new SumoJumpEngine(nameOfCurrentLevel);
 
   // Create the players
-  gameEngine.addController( new SumoJumpExampleKeyCtrl());
+  //gameEngine.addController( new SumoJumpExampleKeyCtrl());
+  gameEngine.addController( new SumoJumpExampleRandomDemoAgent());
   gameEngine.addController( new SumoJumpExampleRandomDemoAgent());
   gameEngine.addController( new AlbertoAgent());
 

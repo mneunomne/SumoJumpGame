@@ -11,6 +11,8 @@
 
   // Each derived class needs to implement some kind of action
   abstract public void action();
+
+  boolean isObjectiveAbove = true;
   
   // Constructor (sets the state name)
   AlbertoState(String name, SumoJumpPlayer player) {
@@ -26,6 +28,9 @@
     } else {
       wasActiveLastCycle = true;
     }
+    SumoJumpGoalMeasurement closestGoal = getClosestGoal();
+    this.isObjectiveAbove = getClosestGoal().position.y < 0;
+    println("isObjectiveAbove", isObjectiveAbove, getClosestGoal().position.y);
     action();
   }
   
@@ -70,7 +75,6 @@
     float closestDist = 9999; 
     int i = 0;
     for (SumoJumpPlatformMeasurement platform : platforms) {
-      println("platforms", platform.left.y);
       float yDist = platform.left.y; 
       if (yDist < 0 && yDist < closestDist) {
         yDist = closestDist;
@@ -79,6 +83,16 @@
       i++;
     }
     return platforms.get(targetPlatformIndex);
+  }
+
+  boolean isPlayerNear () {
+    boolean isNear = false;
+    ArrayList<SumoJumpOpponentMeasurement> opponents = player.senseOpponents();
+    for (SumoJumpOpponentMeasurement opponent : opponents) {
+      println("opponent.distance", opponent.distance);
+      isNear = opponent.distance < 50 || isNear;
+    }
+    return isNear;
   }
 
   SumoJumpGoalMeasurement getClosestGoal () {

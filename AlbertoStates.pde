@@ -10,8 +10,6 @@ class AlbertoStateSearch extends AlbertoState {
 
   int jumpDistance = 100; 
 
-  boolean isObjectiveAbove;
-
   AlbertoStateSearch(String name, SumoJumpPlayer player) {
     super(name, player);
     //this.player = player;
@@ -50,7 +48,7 @@ class AlbertoStateSearch extends AlbertoState {
       println("goalX", goalX);
       String action = "";
 
-      if (abs(goalX) > 100) {
+      if (abs(goalX) > 100 || !isObjectiveAbove) {
         action = "Walk";
       } else {
         action = "Jump";
@@ -80,15 +78,19 @@ class AlbertoStateSearch extends AlbertoState {
         // approach jumping distance
         if (targetPlatform.left.x < -350) {
           // run to jump!
+          println("run to jump!");
           return "WalkLeft";
         } else {
           // come back...
+          println("come back...");
           return "WalkRight";
         }
       } else {
         println("targetPlatform.right.x", targetPlatform.right.x);
         // approach jumping distance
         if (targetPlatform.left.x > 350) {
+
+          println("run to jump!");
           return "WalkRight";
           // run to jump!
         } else {
@@ -103,35 +105,6 @@ class AlbertoStateSearch extends AlbertoState {
 
     // return name;
   }
-
-  String getNextAction (PVector nextGoal, int platformSide) {
-    boolean isAbove = nextGoal.y < 0;
-    if (isAbove) {
-      return getNextAboveAction(nextGoal);
-    } else {
-      return getNextBellowAction(nextGoal);
-    }
-  }
-
-  String getNextAboveAction (PVector nextGoal) {
-    String action = "";
-    if (abs(nextGoal.x) > jumpDistance) {
-      action = "Walk";
-    } else {
-      action = "Jump";
-    }
-    if (nextGoal.x > 0) {
-      action += "Right";
-    } else {
-      action += "Left";
-    }
-    return action;
-  }
-
-  String getNextBellowAction (PVector nextGoal) {
-    return "";
-  }
-
 
   public void action() {
     
@@ -165,15 +138,23 @@ class AlbertoStateWalkRight extends AlbertoState {
       return name;
     }
 
+    if(isPlayerNear()) {
+      println("player near! JumpRight");
+      return "JumpRight";
+    }
+
     SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
 
     // if under the platform...
-    if (targetPlatform.right.x > 0 && targetPlatform.right.y < 0) {
+    if (targetPlatform.right.x > 0 && targetPlatform.left.x < 0) {
+      println("under the platform!");
       // just continue walking
       return name;
     }
+
+    println("isObjectiveAbove", isObjectiveAbove);
     
-    if (targetPlatform.left.x > -450 && targetPlatform.left.x < -350) {
+    if (targetPlatform.left.x > 0 && targetPlatform.left.x < 150 && isObjectiveAbove) {
       return "JumpRight";
     }
 
@@ -216,15 +197,21 @@ class AlbertoStateWalkLeft extends AlbertoState {
       return name;
     }
 
+    if(isPlayerNear()) {
+      println("player near! JumpLeft");
+      return "JumpLeft";
+    }
+
     SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
 
     // if under the platform...
     if (targetPlatform.right.x > 0 && targetPlatform.right.y < 0) {
       // just continue walking
+      println("under the platform!");
       return name;
     }
 
-    if (targetPlatform.left.x > -450 && targetPlatform.left.x < -350) {
+    if (targetPlatform.left.x > -450 && targetPlatform.left.x < -350 && isObjectiveAbove) {
       return "JumpLeft";
     }
 
