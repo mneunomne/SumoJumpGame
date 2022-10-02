@@ -1,3 +1,5 @@
+![](/image.png)
+
 # SumoJumpGame - Assigment 2
 
 - *Student*: AlbertoNilya Salgado Harres
