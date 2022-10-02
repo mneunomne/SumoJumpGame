@@ -1,10 +1,8 @@
 // ******************************************
-// State for walking to the right side
-
+// Search: State for searching what to do
+// ******************************************
 
 class AlbertoStateSearch extends AlbertoState {
-
-  //SumoJumpPlayer player;                    // Reference to player object
 
   PVector nextGoal;
 
@@ -12,87 +10,57 @@ class AlbertoStateSearch extends AlbertoState {
 
   AlbertoStateSearch(String name, SumoJumpPlayer player) {
     super(name, player);
-    //this.player = player;
   }
 
   public String transition() {
-    //println("Search!");
     SumoJumpProprioceptiveMeasurement proprio = player.senseProprioceptiveData();
 
     if (!proprio.onFloor) {
-      //println("flying!!!");
+      // if its flying... wait
       return name;
     }
-
-    //PVector nextTarget = getNextTarget();
-
+    
+    // always know closest goal
     SumoJumpGoalMeasurement closestGoal = getClosestGoal();
 
-    if (player.sensePlatforms().size() == 0) {
-      println("noVisible platforms");
-      return "WalkLeft";
-    }
-
+    // always calculate target plaform (closest on y axis)
     SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
-    
+  
     PVector  playerPos = player.sensePositionInPixelWorld();
     float distLeft = playerPos.dist(targetPlatform.left); 
     float distRight = playerPos.dist(targetPlatform.right);
     boolean onThisPlatform = targetPlatform.standingOnThisPlatform;
 
-    println("onThisPlatform!", onThisPlatform);
-
     // if already standing on platform... go for the goal!!! (this is working fine)
-    if (onThisPlatform) {
+    // also if there are no visible platforms... just do something as if the goal was right there!
+    if (onThisPlatform || player.sensePlatforms().size() == 0) {
+      // get X position of the next closest goal
       float goalX = getClosestGoal().position.x;
-      println("goalX", goalX);
-      String action = "";
-
-      if (abs(goalX) > 100 || !isObjectiveAbove) {
-        action = "Walk";
-      } else {
-        action = "Jump";
-      }
-      if (goalX < 0) {
-        action += "Left";
-      } else {
-        action += "Right";
-      }
+      // if is far or near, if objective above or under -> Walk or Jump
+      String action = (abs(goalX) > 150 || !isObjectiveAbove) ? "Walk" : "Jump";
+      // if move right or left
+      action += (goalX < 0) ? "Left" : "Right";
       return action;
-
-
     } else {
-
-      if (abs(targetPlatform.left.x) > abs(targetPlatform.right.x)) {
-        // platform is to the left
-        
-      } else {
-        // platform is to the right
-
-      }
-
       // check what side of the platform is closer
       if (targetPlatform.left.x < targetPlatform.right.x) {
-        println("targetPlatform.left.x", targetPlatform.left.x);
         // left side is closer
         // approach jumping distance
-        if (targetPlatform.left.x < -350) {
+        if (targetPlatform.left.x < -300) {
           // run to jump!
-          println("run to jump!");
+          // println("run to jump!");
           return "WalkLeft";
         } else {
           // come back...
-          println("come back...");
+          // println("come back...");
           return "WalkRight";
         }
       } else {
-        println("targetPlatform.right.x", targetPlatform.right.x);
         // approach jumping distance
         if (targetPlatform.left.x > 350) {
-
-          println("run to jump!");
-          return "WalkRight";
+          //println("run to jump!");
           // run to jump!
+          return "WalkRight";
         } else {
           // come back...
           return "WalkLeft";
@@ -107,11 +75,14 @@ class AlbertoStateSearch extends AlbertoState {
   }
 
   public void action() {
-    
+    // no need to do anything
   }
  
 }
 
+// ******************************************
+// WalkRight: guess what... state for Walking Right
+// ******************************************
 
 class AlbertoStateWalkRight extends AlbertoState {
 
@@ -124,17 +95,15 @@ class AlbertoStateWalkRight extends AlbertoState {
   public String transition() {
     if (player.sensePlatforms().size() == 0) {
       if (millis() - timeOfActivation > 1000 ) {
-      if (random(0, 1) < 0.5) {
-        return "WalkLeft";
-      } else { 
-        return "WalkRight";
-      }
+        // if no platform visible, just walk somewhere to see something...
+        return randomDirection();
       } else {
         return name;
       }
     }
 
-    if (millis() - timeOfActivation < 200 ) {  // State transition when having waited for 200 milliseconds  
+    // State transition when having waited for 200 milliseconds
+    if (millis() - timeOfActivation < 200 ) {
       return name;
     }
 
@@ -168,7 +137,8 @@ class AlbertoStateWalkRight extends AlbertoState {
 
 
 // ******************************************
-// State for walking to the left side
+// and.... surprise! State for walking Left
+// ******************************************
 
 class AlbertoStateWalkLeft extends AlbertoState {
 
@@ -181,18 +151,13 @@ class AlbertoStateWalkLeft extends AlbertoState {
   public String transition() {
      if (player.sensePlatforms().size() == 0) {
       if (millis() - timeOfActivation > 1000 ) {
-      if (random(0, 1) < 0.5) {
-        return "WalkLeft";
-      } else { 
-        return "WalkRight";
-      }
+        return randomDirection(); 
       } else {
         return name;
       }
     }
-
-
-
+    
+    // only check what to do next every 0.2s while walking
     if (millis() - timeOfActivation < 200 ) {  // State transition when having waited for 200 milliseconds  
       return name;
     }
@@ -223,6 +188,12 @@ class AlbertoStateWalkLeft extends AlbertoState {
   }
 }
 
+// ******************************************
+// what is this little thing in my shoe, its 
+// quite annoying, maybe i should... Jump Right!
+// ******************************************
+
+
 class AlbertoStateJumpRight extends AlbertoState {
 
   //SumoJumpPlayer player;                    // Reference to player object
@@ -232,14 +203,26 @@ class AlbertoStateJumpRight extends AlbertoState {
   }
 
   public String transition() {
+    // after jumping, always search for what to do next
    return "Search";
   }
 
   public void action() {
     player.jumpUp(100);
-    player.moveSidewards(30);
+    player.moveSidewards(50);
   }
 }
+
+// ******************************************
+// once I met a farmer, he has this story to tell
+// he has a collection of rabbits and rackoons
+// and they were all friends and so on,
+// but then one they a small capivara came to the party
+// they felt an eerie vibration on their fur
+// with the apporach of this capivara
+// they said "I wonder what this capivara is doing here"
+// the capivara said: "JumpLeft"
+// ******************************************
 
 class AlbertoStateJumpLeft extends AlbertoState {
 
@@ -249,13 +232,23 @@ class AlbertoStateJumpLeft extends AlbertoState {
     super(name, player);
     //this.player = player;
   }
-
+  
   public String transition() {
+   // after jumping, always search for what to do next
    return "Search";
   }
 
   public void action() {
     player.jumpUp(100);
-    player.moveSidewards(-30);
+    player.moveSidewards(-50);
+  }
+}
+
+// just little helper function to walk SOMEWHERE
+String randomDirection () {
+  if (random(0, 1) < 0.5) {
+    return "WalkLeft";
+  } else { 
+    return "WalkRight";
   }
 }

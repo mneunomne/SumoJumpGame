@@ -30,7 +30,7 @@
     }
     SumoJumpGoalMeasurement closestGoal = getClosestGoal();
     this.isObjectiveAbove = getClosestGoal().position.y < 0;
-    println("isObjectiveAbove", isObjectiveAbove, getClosestGoal().position.y);
+    //println("isObjectiveAbove", isObjectiveAbove, getClosestGoal().position.y);
     action();
   }
   
@@ -43,7 +43,7 @@
     SumoJumpGoalMeasurement closestGoal = getClosestGoal();
 
     if (player.sensePlatforms().size() == 0) {
-      println("noVisible platforms");
+      //println("noVisible platforms");
       return closestGoal.position;
     }
 
@@ -54,7 +54,7 @@
     float distRight = playerPos.dist(targetPlatform.right);
     boolean onThisPlatform = targetPlatform.standingOnThisPlatform;
 
-    println("onThisPlatform!", targetPlatform.left.y);
+    //println("onThisPlatform!", targetPlatform.left.y);
 
     // if already standing on platform... go for the goal
     if (onThisPlatform) {
@@ -89,7 +89,6 @@
     boolean isNear = false;
     ArrayList<SumoJumpOpponentMeasurement> opponents = player.senseOpponents();
     for (SumoJumpOpponentMeasurement opponent : opponents) {
-      println("opponent.distance", opponent.distance);
       isNear = opponent.distance < 50 || isNear;
     }
     return isNear;
