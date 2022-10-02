@@ -1,9 +1,9 @@
 /*
 - *Student*: Alberto Salgado Harres
+- *Matrikelnummer*: 33853
 - *Programm*: Digital Media Master at Hfk Bremen
 - *Semester*: SS2022
 - *Date*: 2.10.2022
-- *Matrikelnummer*: 33853
 - *Class*: Autonomous Agents
 - *Lecturer*: Prof. Tim Laue 
 */
