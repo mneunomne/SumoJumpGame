@@ -1,30 +1,36 @@
 /*
-- *Student*: Alberto Salgado Harres
+- *Student*: AlbertoNilya Salgado Harres
 - *Programm*: Digital Media Master at Hfk Bremen
 - *Semester*: SS2022
-- *Date*: 2.10.2022
 - *Matrikelnummer*: 33853
+----------------
+- *Student*: Nilufer Musaeva
+- *Programm*: Digital Media Master at Hfk Bremen
+- *Semester*: SS2022
+- *Matrikelnummer*: 33861
+----------------
 - *Class*: Autonomous Agents
 - *Lecturer*: Prof. Tim Laue 
+- *Date*: 2.10.2022
 */
 
 // ******************************************
 // Search: State for searching what to do
 // ******************************************
 
-class AlbertoStateSearch extends AlbertoState {
-
+class AlbertoNilyaStateSearch extends AlbertoNilyaState {
+  
   PVector nextGoal;
-
+  
   int jumpDistance = 100; 
-
-  AlbertoStateSearch(String name, SumoJumpPlayer player) {
+  
+  AlbertoNilyaStateSearch(String name, SumoJumpPlayer player) {
     super(name, player);
   }
-
+  
   public String transition() {
     SumoJumpProprioceptiveMeasurement proprio = player.senseProprioceptiveData();
-
+    
     if (!proprio.onFloor) {
       // if its flying... wait
       return name;
@@ -32,7 +38,7 @@ class AlbertoStateSearch extends AlbertoState {
     
     // always know closest goal
     SumoJumpGoalMeasurement closestGoal = getClosestGoal();
-
+    
     if (player.sensePlatforms().size() == 0) {
       float goalX = closestGoal.position.x;
       // if is far or near, if objective above or under -> Walk or Jump
@@ -44,12 +50,12 @@ class AlbertoStateSearch extends AlbertoState {
     
     // always calculate target plaform (closest on y axis)
     SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
-  
+    
     PVector  playerPos = player.sensePositionInPixelWorld();
     float distLeft = playerPos.dist(targetPlatform.left); 
     float distRight = playerPos.dist(targetPlatform.right);
     boolean onThisPlatform = targetPlatform.standingOnThisPlatform;
-
+    
     // if already standing on platform... go for the goal!!! (this is working fine)
     // also if there are no visible platforms... just do something as if the goal was right there!
     if (onThisPlatform) {
@@ -65,7 +71,7 @@ class AlbertoStateSearch extends AlbertoState {
       if (targetPlatform.left.x < targetPlatform.right.x) {
         // left side is closer
         // approach jumping distance
-        if (targetPlatform.left.x < -300) {
+        if (targetPlatform.left.x < - 300) {
           // run to jump!
           // println("run to jump!");
           return "WalkLeft";
@@ -87,60 +93,58 @@ class AlbertoStateSearch extends AlbertoState {
       }
     }
   }
-
+  
   public void action() {
     // no need to do anything
   }
- 
 }
 
 // ******************************************
 // WalkRight: guess what... state for Walking Right
 // ******************************************
 
-class AlbertoStateWalkRight extends AlbertoState {
-
-  AlbertoStateWalkRight(String name, SumoJumpPlayer player) {
+class AlbertoNilyaStateWalkRight extends AlbertoNilyaState {
+  
+  AlbertoNilyaStateWalkRight(String name, SumoJumpPlayer player) {
     super(name, player);
-    //this.player = player;
   }
-
+  
   public String transition() {
     if (player.sensePlatforms().size() == 0) {
-      if (millis() - timeOfActivation > 1000 ) {
+      if (millis() - timeOfActivation > 1000) {
         // if no platform visible, just walk somewhere to see something...
         return randomDirection();
       } else {
+        // else, just keep on walking, walking, walking, walking, walking, walking, walking, walking, walking
         return name;
       }
     }
-
+    
     // State transition when having waited for 200 milliseconds
-    if (millis() - timeOfActivation < 200 ) {
+    if (millis() - timeOfActivation < 200) {
       return name;
     }
     
-    if(isPlayerNear()) {
-      println("player near! JumpRight");
+    if (isPlayerNear()) {
+      // println("player near! JumpRight");
       return "JumpRight";
     }
-
+    
     SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
-
+    
     // if under the platform...
     if (targetPlatform.right.x > 0 && targetPlatform.left.x < 0) {
-      println("under the platform!");
       // just continue walking
       return name;
     }
-        
+    
     if (targetPlatform.left.x > 0 && targetPlatform.left.x < 150 && isObjectiveAbove) {
       return "JumpRight";
     }
     
     return "Search";
   };
-
+  
   public void action() {
     player.moveSidewards(60);
   }
@@ -151,17 +155,15 @@ class AlbertoStateWalkRight extends AlbertoState {
 // and.... surprise! State for walking Left
 // ******************************************
 
-class AlbertoStateWalkLeft extends AlbertoState {
-
-  //SumoJumpPlayer player;                    // Reference to player object
-
-  AlbertoStateWalkLeft(String name, SumoJumpPlayer player) {
+class AlbertoNilyaStateWalkLeft extends AlbertoNilyaState {
+    
+  AlbertoNilyaStateWalkLeft(String name, SumoJumpPlayer player) {
     super(name, player);
   }
-
+  
   public String transition() {
-     if (player.sensePlatforms().size() == 0) {
-      if (millis() - timeOfActivation > 1000 ) {
+    if (player.sensePlatforms().size() == 0) {
+      if (millis() - timeOfActivation > 1000) {
         return randomDirection(); 
       } else {
         return name;
@@ -169,33 +171,33 @@ class AlbertoStateWalkLeft extends AlbertoState {
     }
     
     // only check what to do next every 0.2s while walking
-    if (millis() - timeOfActivation < 200 ) {  // State transition when having waited for 200 milliseconds  
+    if (millis() - timeOfActivation < 200) {  // State transition when having waited for 200 milliseconds  
       return name;
     }
-
-    if(isPlayerNear()) {
+    
+    if (isPlayerNear()) {
       println("player near! JumpLeft");
       return "JumpLeft";
     }
-
+    
     SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
-
+    
     // if under the platform...
     if (targetPlatform.right.x > 0 && targetPlatform.right.y < 0) {
       // just continue walking
       println("under the platform!");
       return name;
     }
-
-    if (targetPlatform.right.x < -50 && targetPlatform.right.x > -200 && isObjectiveAbove) {
+    println("targetPlatform.right.x", targetPlatform.right.x);
+    if (targetPlatform.right.x < - 50 && targetPlatform.right.x > - 200 && isObjectiveAbove) {
       return "JumpLeft";
     }
-
+    
     return "Search";
   }
-
+  
   public void action() {
-    player.moveSidewards(-60);
+    player.moveSidewards( - 60);
   }
 }
 
@@ -205,19 +207,17 @@ class AlbertoStateWalkLeft extends AlbertoState {
 // ******************************************
 
 
-class AlbertoStateJumpRight extends AlbertoState {
-
-  //SumoJumpPlayer player;                    // Reference to player object
-
-  AlbertoStateJumpRight(String name, SumoJumpPlayer player) {
+class AlbertoNilyaStateJumpRight extends AlbertoNilyaState {
+    
+  AlbertoNilyaStateJumpRight(String name, SumoJumpPlayer player) {
     super(name, player);
   }
-
+  
   public String transition() {
     // after jumping, always search for what to do next
-   return "Search";
+    return "Search";
   }
-
+  
   public void action() {
     player.jumpUp(100);
     player.moveSidewards(50);
@@ -235,28 +235,26 @@ class AlbertoStateJumpRight extends AlbertoState {
 // the capivara said: "JumpLeft"
 // ******************************************
 
-class AlbertoStateJumpLeft extends AlbertoState {
-
-  //SumoJumpPlayer player;                    // Reference to player object
-
-  AlbertoStateJumpLeft(String name, SumoJumpPlayer player) {
+class AlbertoNilyaStateJumpLeft extends AlbertoNilyaState {
+  
+  AlbertoNilyaStateJumpLeft(String name, SumoJumpPlayer player) {
     super(name, player);
     //this.player = player;
   }
   
   public String transition() {
-   // after jumping, always search for what to do next
-   return "Search";
+    // after jumping, always search for what to do next
+    return "Search";
   }
-
+  
   public void action() {
     player.jumpUp(100);
-    player.moveSidewards(-50);
+    player.moveSidewards( - 50);
   }
 }
 
 // just little helper function to walk SOMEWHERE
-String randomDirection () {
+String randomDirection() {
   if (random(0, 1) < 0.5) {
     return "WalkLeft";
   } else { 

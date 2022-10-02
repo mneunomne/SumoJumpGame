@@ -1,34 +1,40 @@
 /*
-- *Student*: Alberto Salgado Harres
+- *Student*: AlbertoNilya Salgado Harres
 - *Programm*: Digital Media Master at Hfk Bremen
 - *Semester*: SS2022
-- *Date*: 2.10.2022
 - *Matrikelnummer*: 33853
+----------------
+- *Student*: Nilufer Musaeva
+- *Programm*: Digital Media Master at Hfk Bremen
+- *Semester*: SS2022
+- *Matrikelnummer*: 33861
+----------------
 - *Class*: Autonomous Agents
 - *Lecturer*: Prof. Tim Laue 
+- *Date*: 2.10.2022
 */
 
-class AlbertoAgent extends SumoJumpController {
+class AlbertoNilyaAgent extends SumoJumpController {
 
-  AlbertoStateMachine stateMachine;
-  AlbertoStateSearch search;
-  AlbertoStateWalkRight walkRight;
-  AlbertoStateWalkLeft walkLeft;
-  AlbertoStateJumpRight jumpRight;
-  AlbertoStateJumpLeft jumpLeft;
+  AlbertoNilyaStateMachine stateMachine;
+  AlbertoNilyaStateSearch search;
+  AlbertoNilyaStateWalkRight walkRight;
+  AlbertoNilyaStateWalkLeft walkLeft;
+  AlbertoNilyaStateJumpRight jumpRight;
+  AlbertoNilyaStateJumpLeft jumpLeft;
 
-  AlbertoAgent() {
+  AlbertoNilyaAgent() {
     super();
   }
 
   void act() {
     if(stateMachine == null) {
-      stateMachine = new AlbertoStateMachine();
-      search = new AlbertoStateSearch("Search", player);
-      walkRight = new AlbertoStateWalkRight("WalkRight", player);
-      walkLeft  = new AlbertoStateWalkLeft("WalkLeft", player);
-      jumpRight = new AlbertoStateJumpRight("JumpRight", player);
-      jumpLeft = new AlbertoStateJumpLeft("JumpLeft", player);
+      stateMachine = new AlbertoNilyaStateMachine();
+      search = new AlbertoNilyaStateSearch("Search", player);
+      walkRight = new AlbertoNilyaStateWalkRight("WalkRight", player);
+      walkLeft  = new AlbertoNilyaStateWalkLeft("WalkLeft", player);
+      jumpRight = new AlbertoNilyaStateJumpRight("JumpRight", player);
+      jumpLeft = new AlbertoNilyaStateJumpLeft("JumpLeft", player);
       stateMachine.addState(search);
       stateMachine.addState(walkRight);
       stateMachine.addState(walkLeft);
@@ -40,7 +46,7 @@ class AlbertoAgent extends SumoJumpController {
   }
 
   String getName() {;
-    return "Alberto";
+    return "AI Kitty";
   }
 
   char getLetter() {
@@ -48,7 +54,7 @@ class AlbertoAgent extends SumoJumpController {
   }
 
   color getColor() {
-    return color(random(0,255), 0, 0);
+    return color(0, 0, 255);
   }
 
   void draw() {

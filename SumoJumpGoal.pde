@@ -8,6 +8,7 @@ class SumoJumpGoal {
   private float pixWidth;
   private float pixHeight;
   private int identifier;
+  PImage heart;
 
   SumoJumpGoal(String[] params, int id) {
     // parameter 0 is skipped, contains element type information
@@ -17,6 +18,8 @@ class SumoJumpGoal {
     pixHeight = float(params[4]);
     identifier = id;
     createBodyAndShape();
+    heart = loadImage("heart.png");
+
   }
 
   private void createBodyAndShape() {
@@ -40,7 +43,9 @@ class SumoJumpGoal {
     rectMode(CORNER);
     noStroke();
     fill(200, 50, 200, 200);
-    rect(pixX, pixY, pixWidth, pixHeight);
+    //rect(pixX, pixY, pixWidth, pixHeight);
+    tint(255);
+    image(heart, pixX-2, pixY-2, pixWidth+4, pixHeight+4);
   }
   
   public PVector getCenterInPixelWorld() {

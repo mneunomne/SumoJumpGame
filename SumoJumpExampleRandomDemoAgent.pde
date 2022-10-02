@@ -4,6 +4,7 @@ class SumoJumpExampleRandomDemoAgent extends SumoJumpController {
   RandomDemoAgentStateWalkRight walkRight;
   RandomDemoAgentStateWalkLeft walkLeft;
   RandomDemoAgentStateJump jump;
+  int index;
 
   SumoJumpExampleRandomDemoAgent() {
     super();
@@ -24,7 +25,7 @@ class SumoJumpExampleRandomDemoAgent extends SumoJumpController {
   }
 
   String getName() {
-    return "Captain Random";
+    return "Random Chicken";
   }
 
   char getLetter() {
@@ -32,7 +33,7 @@ class SumoJumpExampleRandomDemoAgent extends SumoJumpController {
   }
 
   color getColor() {
-    return color(random(0,255), 0, 0);
+    return color(0, 200, 0);
   }
 
   void draw() {

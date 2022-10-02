@@ -8,6 +8,7 @@ class SumoJumpPlayer {
   private SumoJumpEngine gameEngine;
   private int identifier;
   private SumoJumpController controller;
+  int index;
 
   SumoJumpPlayer(float x, float y, SumoJumpEngine engine, int id, SumoJumpController controller) {
     identifier = id;
@@ -19,6 +20,7 @@ class SumoJumpPlayer {
     bd.position.set(box2d.coordPixelsToWorld(x, y));
     bd.linearDamping = 0.9;
     body = box2d.createBody(bd);
+    this.index = ceil(random(2));
 
     // Define a shape
     CircleShape cs = new CircleShape();
@@ -47,17 +49,24 @@ class SumoJumpPlayer {
     noStroke();
     pushMatrix();
     translate(pos.x, pos.y);		// Using the Vec2 position 
-    fill(controller.getColor());
+    /*
     ellipseMode(RADIUS);
     ellipse(0, 0, r, r);
-    textAlign(CENTER, CENTER);
-    fill(255);
-    textSize(30);
-    text(controller.getLetter(), 0,0);
     noStroke();
-    translate(0, -40);
     fill(250, 250, 220);
     ellipse(0, 0, 16, 16);
+    */
+    int i = controller.getName() == "AI Kitty" ? 1 : controller.getName() == "Key Chicken" ? 2 : 0;
+    translate(0, -40);
+    pushStyle();
+      tint(255);
+      image(images[i], 0, -10, 60, 80);
+    popStyle();
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(28);
+    text(controller.getName(), -10,-20);
+
     if (drawStatus) {
       translate(r, 0);
       textAlign(LEFT, CENTER);

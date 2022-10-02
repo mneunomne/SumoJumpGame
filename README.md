@@ -1,12 +1,18 @@
 # SumoJumpGame - Assigment 2
 
-- *Student*: Alberto Salgado Harres
+- *Student*: AlbertoNilya Salgado Harres
 - *Programm*: Digital Media Master at Hfk Bremen
 - *Semester*: SS2022
-- *Date*: 2.10.2022
 - *Matrikelnummer*: 33853
+----------------
+- *Student*: Nilufer Musaeva
+- *Programm*: Digital Media Master at Hfk Bremen
+- *Semester*: SS2022
+- *Matrikelnummer*: 33861
+----------------
 - *Class*: Autonomous Agents
 - *Lecturer*: Prof. Tim Laue 
+- *Date*: 2.10.2022
 
 ## States
 

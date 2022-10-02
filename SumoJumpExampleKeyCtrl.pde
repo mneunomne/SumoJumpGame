@@ -16,7 +16,7 @@ class SumoJumpExampleKeyCtrl extends SumoJumpController {
   }
   
   String getName() {
-    return "Captain Key";
+    return "Key Chicken";
   }
   
   char getLetter() {

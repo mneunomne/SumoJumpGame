@@ -1,16 +1,22 @@
 /*
-- *Student*: Alberto Salgado Harres
+- *Student*: AlbertoNilya Salgado Harres
 - *Programm*: Digital Media Master at Hfk Bremen
 - *Semester*: SS2022
-- *Date*: 2.10.2022
 - *Matrikelnummer*: 33853
+----------------
+- *Student*: Nilufer Musaeva
+- *Programm*: Digital Media Master at Hfk Bremen
+- *Semester*: SS2022
+- *Matrikelnummer*: 33861
+----------------
 - *Class*: Autonomous Agents
 - *Lecturer*: Prof. Tim Laue 
+- *Date*: 2.10.2022
 */
 
 // State base class
 
-abstract class AlbertoState {
+abstract class AlbertoNilyaState {
   protected boolean wasActiveLastCycle;  // Has this state just been entered?
   protected int timeOfActivation;        // When did we enter this state?
   protected String name;                 // State name
@@ -27,7 +33,7 @@ abstract class AlbertoState {
   boolean isObjectiveAbove = true;
   
   // Constructor (sets the state name)
-  AlbertoState(String name, SumoJumpPlayer player) {
+  AlbertoNilyaState(String name, SumoJumpPlayer player) {
     this.name = name;
     this.player = player;
   }
@@ -112,19 +118,19 @@ abstract class AlbertoState {
   }
 }
 
-class AlbertoStateMachine {
-  private  HashMap<String, AlbertoState> states = new HashMap<String, AlbertoState>();
-  private AlbertoState currentState = null;
-  private AlbertoState lastState = null;
+class AlbertoNilyaStateMachine {
+  private  HashMap<String, AlbertoNilyaState> states = new HashMap<String, AlbertoNilyaState>();
+  private AlbertoNilyaState currentState = null;
+  private AlbertoNilyaState lastState = null;
   
-  public void addState(AlbertoState state) {
+  public void addState(AlbertoNilyaState state) {
     if (states.containsKey(state.getName()))
       println("State " + state.getName() + " was alrady inserted!");
     else
       states.put(state.getName(), state);
   }
   
-  public void setStartState(AlbertoState state) {
+  public void setStartState(AlbertoNilyaState state) {
     if (states.containsKey(state.getName())) {
       currentState = state;
     } else {

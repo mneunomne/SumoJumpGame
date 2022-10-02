@@ -10,6 +10,7 @@ class SumoJumpPlatform {
   boolean isVisible;
   boolean collisionHandling;
   int identifier;
+  PImage pencil;
 
   SumoJumpPlatform(String[] params, int id) {
     // parameter 0 is skipped, contains element type information
@@ -21,6 +22,7 @@ class SumoJumpPlatform {
     identifier = id;
     collisionHandling = true;
     createBodyAndShape();
+    pencil = loadImage("pencil.png");
   }
 
   SumoJumpPlatform(float x, float y, float w, float h, boolean c) {
@@ -78,8 +80,10 @@ class SumoJumpPlatform {
       // We can simply use the stored pixel coordinates:
       rectMode(CORNER);
       noStroke();
-      fill(90, 50, 0);
-      rect(pixX, pixY, pixWidth, pixHeight);
+      //tint(255, 0, 0);
+      image(pencil, pixX-5, pixY-5, pixWidth+10, pixHeight+10);
+      //fill(90, 50, 0);
+      //rect(pixX, pixY, pixWidth, pixHeight);
     }
   }
 }

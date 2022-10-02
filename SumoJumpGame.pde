@@ -1,11 +1,19 @@
 /*
-- *Student*: Alberto Salgado Harres
-- *Matrikelnummer*: 33853
+### Students
+
+- *Student*: AlbertoNilya Salgado Harres
 - *Programm*: Digital Media Master at Hfk Bremen
 - *Semester*: SS2022
-- *Date*: 2.10.2022
+- *Matrikelnummer*: 33853
+----
+- *Student*: Nilufer Musaeva
+- *Programm*: Digital Media Master at Hfk Bremen
+- *Semester*: SS2022
+- *Matrikelnummer*: 33861
+
 - *Class*: Autonomous Agents
 - *Lecturer*: Prof. Tim Laue 
+- *Date*: 2.10.2022
 */
 
 import shiffman.box2d.*;
@@ -16,6 +24,9 @@ import org.jbox2d.dynamics.contacts.*;
 import java.util.Collections;
 import processing.sound.*;
 
+PImage [] images = new PImage[3];
+
+PFont font;
 
 Box2DProcessing box2d;
 SumoJumpEngine gameEngine;
@@ -42,6 +53,13 @@ void setup() {
   surface.setResizable(true);
   sine = new SinOsc(this);
   sine.freq(1500);
+
+  font = createFont("Propisi_W01_Medium.ttf", 40);
+  textFont(font, 128);
+
+  for (int i = 0; i < 3; i++) {
+    images[i] = loadImage("char" + String.valueOf(i+1) + ".png");
+  }
 }
 
 
@@ -72,10 +90,10 @@ void initGame() {
   gameEngine = new SumoJumpEngine(nameOfCurrentLevel);
 
   // Create the players
-  //gameEngine.addController( new SumoJumpExampleKeyCtrl());
+  //gameEngine.addController( new SumoJumpExampleRandomDemoAgent(1));
+  gameEngine.addController( new SumoJumpExampleKeyCtrl());
   gameEngine.addController( new SumoJumpExampleRandomDemoAgent());
-  gameEngine.addController( new SumoJumpExampleRandomDemoAgent());
-  gameEngine.addController( new AlbertoAgent());
+  gameEngine.addController( new AlbertoNilyaAgent());
 
   // Initialize countdown
   countDownStartTime = millis();
@@ -86,8 +104,9 @@ void initGame() {
 
 
 void createBackgroundImage() {
-  backgroundImage = loadImage("backgroundImage.png");
+  backgroundImage = loadImage("bg.png");
   // This is a stupid solution:
+  tint(255, 10);
   backgroundImage.resize(widthOfCurrentLevel, heightOfCurrentLevel);
   // TODO: Scale and crop proper background images
 }
@@ -165,7 +184,8 @@ void draw() {
   if (gameEngine.getWinner() != null) {
     textAlign(CENTER);
     textSize(120);
-    fill(255, 200, 100);
+    //fill(255, 200, 100);
+    fill(0);
     text("WINNER!", width/2, height/2.5);
     text(gameEngine.getWinner().getName(), width/2, height/1.5);
     textSize(20);
@@ -175,7 +195,8 @@ void draw() {
   if (countDownRemainingTime == 0) {
     textAlign(CENTER);
     textSize(120);
-    fill(255, 200, 100);
+    //fill(255, 200, 100);
+    fill(0);
     text("TIME IS UP!", width/2, height/2.5);
     sine.freq(500);
     sine.play();
