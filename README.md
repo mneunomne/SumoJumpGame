@@ -2,7 +2,7 @@
 
 # SumoJumpGame - Assigment 2
 
-- *Student*: AlbertoNilya Salgado Harres
+- *Student*: Alberto Salgado Harres
 - *Programm*: Digital Media Master at Hfk Bremen
 - *Semester*: SS2022
 - *Matrikelnummer*: 33853
