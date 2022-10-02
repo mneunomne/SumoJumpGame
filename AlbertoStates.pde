@@ -86,11 +86,6 @@ class AlbertoStateSearch extends AlbertoState {
         }
       }
     }
-
-    // println("nextGoal", nextGoal);
-    //return getNextAboveAction(nextTarget);
-
-    // return name;
   }
 
   public void action() {
@@ -104,7 +99,6 @@ class AlbertoStateSearch extends AlbertoState {
 // ******************************************
 
 class AlbertoStateWalkRight extends AlbertoState {
-
 
   AlbertoStateWalkRight(String name, SumoJumpPlayer player) {
     super(name, player);
@@ -125,7 +119,7 @@ class AlbertoStateWalkRight extends AlbertoState {
     if (millis() - timeOfActivation < 200 ) {
       return name;
     }
-
+    
     if(isPlayerNear()) {
       println("player near! JumpRight");
       return "JumpRight";
@@ -139,13 +133,11 @@ class AlbertoStateWalkRight extends AlbertoState {
       // just continue walking
       return name;
     }
-
-    println("isObjectiveAbove", isObjectiveAbove);
-    
+        
     if (targetPlatform.left.x > 0 && targetPlatform.left.x < 150 && isObjectiveAbove) {
       return "JumpRight";
     }
-
+    
     return "Search";
   };
 
@@ -195,7 +187,7 @@ class AlbertoStateWalkLeft extends AlbertoState {
       return name;
     }
 
-    if (targetPlatform.left.x > -450 && targetPlatform.left.x < -350 && isObjectiveAbove) {
+    if (targetPlatform.right.x < -50 && targetPlatform.right.x > -200 && isObjectiveAbove) {
       return "JumpLeft";
     }
 
