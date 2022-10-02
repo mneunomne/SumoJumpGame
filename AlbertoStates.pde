@@ -33,6 +33,15 @@ class AlbertoStateSearch extends AlbertoState {
     // always know closest goal
     SumoJumpGoalMeasurement closestGoal = getClosestGoal();
 
+    if (player.sensePlatforms().size() == 0) {
+      float goalX = closestGoal.position.x;
+      // if is far or near, if objective above or under -> Walk or Jump
+      String action = (abs(goalX) > 150 || !isObjectiveAbove) ? "Walk" : "Jump";
+      // if move right or left
+      action += (goalX < 0) ? "Left" : "Right";
+      return action;
+    }
+    
     // always calculate target plaform (closest on y axis)
     SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
   
@@ -43,9 +52,9 @@ class AlbertoStateSearch extends AlbertoState {
 
     // if already standing on platform... go for the goal!!! (this is working fine)
     // also if there are no visible platforms... just do something as if the goal was right there!
-    if (onThisPlatform || player.sensePlatforms().size() == 0) {
+    if (onThisPlatform) {
       // get X position of the next closest goal
-      float goalX = getClosestGoal().posi;tion.x;
+      float goalX = getClosestGoal().position.x;
       // if is far or near, if objective above or under -> Walk or Jump
       String action = (abs(goalX) > 150 || !isObjectiveAbove) ? "Walk" : "Jump";
       // if move right or left
