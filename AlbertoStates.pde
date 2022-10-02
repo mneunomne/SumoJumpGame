@@ -44,11 +44,12 @@ class AlbertoStateSearch extends AlbertoState {
 
     println("onThisPlatform!", onThisPlatform);
 
-    // if already standing on platform... go for the goal
+    // if already standing on platform... go for the goal!!! (this is working fine)
     if (onThisPlatform) {
       float goalX = getClosestGoal().position.x;
       println("goalX", goalX);
       String action = "";
+
       if (abs(goalX) > 100) {
         action = "Walk";
       } else {
@@ -60,33 +61,38 @@ class AlbertoStateSearch extends AlbertoState {
         action += "Right";
       }
       return action;
-    } else {
-      // if not, go for platform:
-        
-        /*
-        if (targetPlatform.left.x > -450 && targetPlatform.left.x < -350) {
-          return "JumpLeft";
-        } else 
 
-        if (targetPlatform.right.x < 450 && targetPlatform.right.x > 350) {
-          return "JumpRight";
-        } else
-        */
+
+    } else {
+
+      if (abs(targetPlatform.left.x) > abs(targetPlatform.right.x)) {
+        // platform is to the left
+        
+      } else {
+        // platform is to the right
+
+      }
 
       // check what side of the platform is closer
       if (targetPlatform.left.x < targetPlatform.right.x) {
         println("targetPlatform.left.x", targetPlatform.left.x);
         // left side is closer
+        // approach jumping distance
         if (targetPlatform.left.x < -350) {
+          // run to jump!
           return "WalkLeft";
         } else {
+          // come back...
           return "WalkRight";
         }
       } else {
         println("targetPlatform.right.x", targetPlatform.right.x);
+        // approach jumping distance
         if (targetPlatform.left.x > 350) {
           return "WalkRight";
+          // run to jump!
         } else {
+          // come back...
           return "WalkLeft";
         }
       }
@@ -143,36 +149,35 @@ class AlbertoStateWalkRight extends AlbertoState {
   }
 
   public String transition() {
-    SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
-    /*
-    if (targetPlatform.left.x > -450 && targetPlatform.left.x < -350) {
-        return "JumpLeft";
-      } else 
-    */
-
-    println("WalkRight targetPlatform.right.x", targetPlatform.right.x);
-
-    if (targetPlatform.right.x > 0 && targetPlatform.right.y < 0) {
-      // under the platform
+    if (player.sensePlatforms().size() == 0) {
+      if (millis() - timeOfActivation > 1000 ) {
+      if (random(0, 1) < 0.5) {
+        return "WalkLeft";
+      } else { 
+        return "WalkRight";
+      }
+      } else {
+        return name;
+      }
     }
 
-    if (abs(targetPlatform.left.x) > abs(targetPlatform.right.x)) {
-      // platform is to the left
-      
-    } else {
-      // platform is to the right
+    if (millis() - timeOfActivation < 200 ) {  // State transition when having waited for 200 milliseconds  
+      return name;
+    }
 
+    SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
+
+    // if under the platform...
+    if (targetPlatform.right.x > 0 && targetPlatform.right.y < 0) {
+      // just continue walking
+      return name;
     }
     
     if (targetPlatform.left.x > -450 && targetPlatform.left.x < -350) {
       return "JumpRight";
     }
 
-   if (millis() - timeOfActivation > 200 ) {  // State transition when having waited for 200 milliseconds 
-      return "Search";
-    } else {
-      return name;
-    }
+    return "Search";
   };
 
   public void action() {
@@ -193,17 +198,37 @@ class AlbertoStateWalkLeft extends AlbertoState {
   }
 
   public String transition() {
-      SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
+     if (player.sensePlatforms().size() == 0) {
+      if (millis() - timeOfActivation > 1000 ) {
+      if (random(0, 1) < 0.5) {
+        return "WalkLeft";
+      } else { 
+        return "WalkRight";
+      }
+      } else {
+        return name;
+      }
+    }
+
+
+
+    if (millis() - timeOfActivation < 200 ) {  // State transition when having waited for 200 milliseconds  
+      return name;
+    }
+
+    SumoJumpPlatformMeasurement targetPlatform = getTargetPlatform();
+
+    // if under the platform...
+    if (targetPlatform.right.x > 0 && targetPlatform.right.y < 0) {
+      // just continue walking
+      return name;
+    }
 
     if (targetPlatform.left.x > -450 && targetPlatform.left.x < -350) {
       return "JumpLeft";
     }
 
-     if (millis() - timeOfActivation > 200 ) {  // State transition when having waited for 200 milliseconds 
-      return "Search";
-    } else {
-      return name;
-    }
+    return "Search";
   }
 
   public void action() {

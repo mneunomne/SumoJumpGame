@@ -63,8 +63,8 @@ void initGame() {
   gameEngine = new SumoJumpEngine(nameOfCurrentLevel);
 
   // Create the players
-  //gameEngine.addController( new SumoJumpExampleKeyCtrl());
-  //gameEngine.addController( new SumoJumpExampleRandomDemoAgent());
+  gameEngine.addController( new SumoJumpExampleKeyCtrl());
+  gameEngine.addController( new SumoJumpExampleRandomDemoAgent());
   gameEngine.addController( new AlbertoAgent());
 
   // Initialize countdown
